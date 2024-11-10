@@ -1,5 +1,5 @@
 {
-    "name": "ge-tracker/laravel-redis-paginator",
+    "name": "juniora/laravel-redis-paginator",
     "description": "Create a Laravel Paginator or LengthAwarePaginator from a Redis sorted set",
     "keywords": [
         "laravel",
@@ -15,19 +15,25 @@
             "email": "james@ge-tracker.com",
             "homepage": "https://www.ge-tracker.com",
             "role": "Developer"
+        },
+        {
+            "name": "Nima HeydariNasab",
+            "email": "nima.heydari79@yahoo.com",
+            "homepage": "https://nimah79.ir",
+            "role": "Maintainer"
         }
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/redis": "^8.0|^9.0|^10.0",
-        "illuminate/support": "^8.0|^9.0|^10.0"
+        "illuminate/redis": "^8.0|^9.0|^10.0|^11.0",
+        "illuminate/support": "^8.0|^9.0|^10.0|^11.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.6",
         "gtjamesa/php-standards": "^2.0",
         "laravel/legacy-factories": "^1.0.4",
-        "orchestra/testbench": "^6.0|^7.0|^8.0",
-        "phpunit/phpunit": "^9.0"
+        "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
+        "phpunit/phpunit": "^9.0|^10.0|^11.0"
     },
     "autoload": {
         "psr-4": {
