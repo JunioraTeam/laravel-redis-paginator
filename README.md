@@ -1,8 +1,8 @@
 # Laravel Redis Sorted Set Paginator
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/ge-tracker/laravel-redis-paginator.svg?style=flat-square)](https://packagist.org/packages/ge-tracker/laravel-redis-paginator)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/ge-tracker/laravel-redis-paginator/Tests?label=tests)](https://github.com/ge-tracker/laravel-redis-paginator/actions?query=workflow%3Arun-tests+branch%3Amaster)
-[![Total Downloads](https://img.shields.io/packagist/dt/ge-tracker/laravel-redis-paginator.svg?style=flat-square)](https://packagist.org/packages/ge-tracker/laravel-redis-paginator)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/juniora/laravel-redis-paginator.svg?style=flat-square)](https://packagist.org/packages/juniora/laravel-redis-paginator)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/juniora/laravel-redis-paginator/Tests?label=tests)](https://github.com/juniora/laravel-redis-paginator/actions?query=workflow%3Arun-tests+branch%3Amaster)
+[![Total Downloads](https://img.shields.io/packagist/dt/juniora/laravel-redis-paginator.svg?style=flat-square)](https://packagist.org/packages/juniora/laravel-redis-paginator)
 
 Ever wanted to display paginated sorted sets at scale? A great example of this would be a leaderboard for a game, or for a website with a large userbase. This package will create a Laravel `LengthAwarePaginator` from a Redis sorted set. As a sorted set, by definition, is always sorted, it allows a large number of records to be paginated, with very little overhead.
 
@@ -11,7 +11,7 @@ Ever wanted to display paginated sorted sets at scale? A great example of this w
 You can install the package via composer:
 
 ```bash
-composer require ge-tracker/laravel-redis-paginator
+composer require juniora/laravel-redis-paginator
 ```
 
 ## Usage
@@ -101,13 +101,14 @@ The `$modelKey` property should correspond to the key that you are using to gene
 
 namespace App\RedisResolvers;
 
-use App\User;
+use App\Models\User;
 use GeTracker\LaravelRedisPaginator\Resolvers\AbstractResolver;
 
 class UserResolver extends AbstractResolver
 {
     // Defaults shown below, can be omitted
     protected $modelKey = 'id';
+
     protected $scoreField = 'score';
 
     /**
@@ -115,7 +116,7 @@ class UserResolver extends AbstractResolver
      */
     protected function resolveModels(array $keys)
     {
-        return User::whereIn('id', $keys)->get();
+        return User::findMany($keys);
     }
 
     /**
@@ -123,10 +124,9 @@ class UserResolver extends AbstractResolver
      */
     protected function resolveKey($key)
     {
-        return (int)str_replace('user:', '', $key);
+        return (int) str_replace('user:', '', $key);
     }
 }
-
 ```
 
 The `resolveKey()` method will take a single key (Redis member), and allow you to transform it. In the example above, we are stripping `user:` from the string, before casting it to an integer. 
@@ -144,7 +144,7 @@ $users = $this->paginator
 We can now access our full User model, as well as the score that has been loaded from Redis:
 
 ```php
-echo $users[0]->name . ' -> ' . $users[0]->score;
+echo $users[0]->name.' -> '.$users[0]->score;
 ```
 
 ## Testing
@@ -160,10 +160,6 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security
-
-If you discover any security related issues, please email james@ge-tracker.com instead of using the issue tracker.
 
 ## Credits
 
