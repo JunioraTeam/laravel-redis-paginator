@@ -9,45 +9,32 @@ abstract class AbstractResolver
 {
     /**
      * The key that maps models to their Redis counterpart.
-     *
-     * @var string
      */
-    protected $modelKey = 'id';
+    protected string $modelKey = 'id';
 
     /**
      * Field to be merged into the collection of models containing the Redis result.
-     *
-     * @var string
      */
-    protected $scoreField = 'score';
+    protected string $scoreField = 'score';
 
     /**
      * Redis results.
-     *
-     * @var Collection
      */
     protected Collection $results;
 
     /**
      * Model Key -> Member mapping.
-     *
-     * @var array
      */
     protected array $resolvedKeyMembers;
 
     /**
      * Member -> Model Key mapping.
-     *
-     * @var array
      */
     protected array $resolvedMemberKeys;
 
     /**
      * Resolve an array of Redis results to their respective models.
-     *
-     * @param Collection $results
-     *
-     * @return Collection
+     * 
      * @psalm-suppress InvalidReturnType
      */
     public function resolve(Collection $results): Collection
@@ -73,13 +60,13 @@ abstract class AbstractResolver
      * Map scores to eloquent models.
      *
      * @param Collection|Model[] $models
-     * @param bool               $eloquent
      *
      * @return Collection|Model[]
+     * 
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress MismatchingDocblockParamType
      */
-    private function mapModels($models, bool $eloquent)
+    private function mapModels(Collection|array $models, bool $eloquent): Collection|array
     {
         // Key the models by the defined key
         $models = $this->keyModels($models);
@@ -106,14 +93,10 @@ abstract class AbstractResolver
 
     /**
      * Key collections by the defined model key.
-     *
-     * @param $array
-     *
-     * @return Collection
      */
-    private function keyModels($array): Collection
+    private function keyModels(Collection|array $array): Collection
     {
-        $models = new Collection($array);
+        $models = collect($array);
 
         // Key the models by the defined key
         $models = $models->keyBy($this->modelKey);
@@ -125,10 +108,8 @@ abstract class AbstractResolver
      * Get an already resolved Redis key.
      *
      * @param $model
-     *
-     * @return string|int|null
      */
-    private function getRedisKey($model)
+    private function getRedisKey($model): string|int|null
     {
         if ($model instanceof Model) {
             return $this->resolvedKeyMembers[$model->getAttribute($this->modelKey)] ?? null;
@@ -139,20 +120,14 @@ abstract class AbstractResolver
 
     /**
      * Get an already resolved Eloquent key.
-     *
-     * @param string $key
-     *
-     * @return string|int|null
      */
-    private function getEloquentKey(string $key)
+    private function getEloquentKey(string $key): string|int|null
     {
         return $this->resolvedMemberKeys[$key] ?? null;
     }
 
     /**
      * Map keys using the key resolver.
-     *
-     * @return array
      */
     private function mapKeys(): array
     {
@@ -181,10 +156,6 @@ abstract class AbstractResolver
 
     /**
      * Resolve a key from Redis to an Eloquent incrementing ID or UUID.
-     *
-     * @param string $key
-     *
-     * @return string|int
      */
-    abstract protected function resolveKey($key);
+    abstract protected function resolveKey(string $key): string|int;
 }
