@@ -48,7 +48,7 @@ abstract class AbstractResolver
             return new Collection();
         }
 
-        if ($models instanceof Collection && $models[0] instanceof Model) {
+        if ($models instanceof Collection && $models->first() instanceof Model) {
             /** @psalm-suppress InvalidReturnStatement */
             return $this->mapModels($models, true);
         }
