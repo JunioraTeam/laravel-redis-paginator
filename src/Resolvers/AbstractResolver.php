@@ -78,17 +78,28 @@ abstract class AbstractResolver
                 return null;
             }
 
+            $scoreFields = $this->resolveScoreFields($score);
+
             // Set the defined score property on the model
             if ($eloquent) {
-                $model->setRelation($this->scoreField, $score);
+                foreach ($scoreFields as $key => $value) {
+                    $model->setRelation($key, $value);
+                }
             } else {
-                $model += [$this->scoreField => $score];
+                $model += $scoreFields;
             }
 
             return $model;
         })->filter()->values();
 
         return $eloquent ? $collection : $collection->toArray();
+    }
+
+    protected function resolveScoreFields($score): array
+    {
+        return [
+            $this->scoreField => $score,
+        ];
     }
 
     /**
