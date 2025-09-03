@@ -95,7 +95,7 @@ abstract class AbstractResolver
         return $eloquent ? $collection : $collection->toArray();
     }
 
-    protected function resolveScoreFields($score): array
+    protected function resolveScoreFields(float $score): array
     {
         return [
             $this->scoreField => $score,
